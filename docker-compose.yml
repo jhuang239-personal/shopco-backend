@@ -12,7 +12,7 @@ services:
       - .env # Runtime secrets (prismadb_connector, OCI keys, JWT, ...) stay on the host
     labels:
       - traefik.enable=true
-      - traefik.http.routers.shopco-backend.rule=Host(`shopco-backend.${DOMAIN}`)
+      - traefik.http.routers.shopco-backend.rule=Host(`${DOMAIN}`)
       - traefik.http.services.shopco-backend.loadbalancer.server.port=${PORT}
       - traefik.http.routers.shopco-backend.tls=true
       - traefik.http.routers.shopco-backend.entrypoints=websecure
