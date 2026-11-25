@@ -1,83 +1,134 @@
-# This is a basic workflow to help you get started with Actions
+# Build -> push -> deploy, without SSH.
+#
+#  1. `build` (GitHub-hosted runner): builds the Docker image and pushes it to GHCR,
+#     tagged with the commit SHA and `latest`.
+#  2. `deploy` (self-hosted runner installed ON the server): pulls that exact image,
+#     runs Prisma migrations, and restarts the container. The runner connects out to
+#     GitHub over HTTPS, so the server needs no inbound SSH and GitHub holds no SSH key.
+#
+# The server keeps its own `.env` (secrets never pass through the workflow).
+#
+# One-time server setup is in README.Docker.md ("Automated deployment").
 
 name: Deploy
 
-# Controls when the workflow will run
 on:
-    # Triggers the workflow on push or pull request events but only for the "main" branch
-    push:
-        branches: ["main"]
+  push:
+    branches: ["main"]
+  workflow_dispatch:
 
-    # Allows you to run this workflow manually from the Actions tab
-    workflow_dispatch:
+permissions:
+  contents: read
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+# Never run two deploys to the server at the same time.
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
 jobs:
-    # This workflow contains a single job called "build"
-    build:
-        # The type of runner that the job will run on
-        runs-on: ubuntu-latest
+  build:
+    name: Build & push image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      image: ${{ steps.image.outputs.name }}
+    steps:
+      - uses: actions/checkout@v4
 
-        # Steps represent a sequence of tasks that will be executed as part of the job
-        steps:
-            # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-            - uses: actions/checkout@v4
+      # GHCR requires lowercase image names.
+      - name: Compute image name
+        id: image
+        run: echo "name=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
 
-            - name: Set up SSH
-              id: ssh-setup
-              env:
-                  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-                  SSH_USER: ${{ secrets.SSH_USER }}
-                  HOST: ${{ secrets.HOST }}
-              run: |
-                  mkdir -p ~/.ssh/
-                  echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-                  chmod 600 ~/.ssh/id_rsa
-                  ssh-keyscan -H $HOST >> ~/.ssh/known_hosts
+      # Emulation so the image can be built for the ARM VM from an x86 runner.
+      - uses: docker/setup-qemu-action@v3
 
-            - name: Create .env file
-              id: create-env
-              run: |
+      - uses: docker/setup-buildx-action@v3
 
-                  # Create .env file  
-                  cat << EOF > .env
-                  NODE_ENV=${{ secrets.NODE_ENV }}
-                  PORT=${{ secrets.PORT }}
-                  POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}
-                  POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}
-                  POSTGRES_DB=${{ secrets.POSTGRES_DB }}
-                  POSTGRES_USER=${{ secrets.POSTGRES_USER }}
-                  POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
-                  JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
-                  JWT_EXPIRATION=${{ secrets.JWT_EXPIRATION }}
-                  FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }}
-                  FIREBASE_AUTH_DOMAIN=${{ secrets.FIREBASE_AUTH_DOMAIN }}
-                  FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }}
-                  FIREBASE_STORAGE_BUCKET=${{ secrets.FIREBASE_STORAGE_BUCKET }}
-                  FIREBASE_MESSAGING_SENDER_ID=${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}
-                  FIREBASE_APP_ID=${{ secrets.FIREBASE_APP_ID }}
-                  FIREBASE_MEASUREMENT_ID=${{ secrets.FIREBASE_MEASUREMENT_ID }}
-                  DOMAIN=${{ secrets.DOMAIN }}
-                  EOF
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-            - name: Setup directories and copy files
-              id: setup-directories
-              run: |
-                  # Copy repository files
-                  ssh ${{ secrets.SSH_USER }}@${{ secrets.HOST }} "mkdir -p ~/Github_Projects/shopco-backend"
-                  scp -r ./* ${{ secrets.SSH_USER }}@${{ secrets.HOST }}:~/Github_Projects/shopco-backend/
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          # The OCI VM is ARM64 (Ampere), and it is the only deploy target. Building arm64 only
+          # halves build time. For a faster native build, set the job's runs-on to
+          # ubuntu-24.04-arm (if your plan includes it) and drop the QEMU step.
+          platforms: linux/arm64
+          tags: |
+            ${{ steps.image.outputs.name }}:${{ github.sha }}
+            ${{ steps.image.outputs.name }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
-                  # Copy .env file
-                  scp -r ./.env ${{ secrets.SSH_USER }}@${{ secrets.HOST }}:~/Github_Projects/shopco-backend/
+  deploy:
+    name: Deploy to server
+    needs: build
+    # Runs only on the self-hosted runner registered on the server (see README.Docker.md).
+    runs-on: [self-hosted, linux, shopco-backend]
+    # Add required reviewers to this environment in GitHub Settings if you want approvals.
+    environment: production
+    permissions:
+      contents: read
+      packages: read
+    env:
+      SHOPCO_IMAGE: ${{ needs.build.outputs.image }}
+      SHOPCO_TAG: ${{ github.sha }}
+      # Directory on the server holding .env. Override with the DEPLOY_DIR repository variable.
+      DEPLOY_DIR: ${{ vars.DEPLOY_DIR }}
+    steps:
+      - uses: actions/checkout@v4
 
-            - name: Deploy
-              id: deploy-backend
-              run: |
-                  ssh ${{ secrets.SSH_USER }}@${{ secrets.HOST }} "cd ~/Github_Projects/shopco-backend && \
-                  docker compose down && \
-                  docker compose up -d --build"
+      - name: Check server prerequisites
+        run: |
+          DIR="${DEPLOY_DIR:-$HOME/apps/shopco-backend}"
+          test -f "$DIR/.env" || { echo "Missing $DIR/.env on the server"; exit 1; }
+          docker compose version
+          echo "DEPLOY_HOME=$DIR" >> "$GITHUB_ENV"
 
-            - name: Clean up SSH keys
-              if: always()
-              run: |
-                  rm -f ~/.ssh/id_rsa ~/.ssh/known_hosts
+      - name: Log in to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+      - name: Sync compose file
+        run: cp docker-compose.yml "$DEPLOY_HOME/docker-compose.yml"
+
+      - name: Pull image
+        working-directory: ${{ env.DEPLOY_HOME }}
+        run: docker compose pull shopco-backend
+
+      - name: Apply database migrations
+        working-directory: ${{ env.DEPLOY_HOME }}
+        run: docker compose run --rm --no-deps shopco-backend node_modules/.bin/prisma migrate deploy
+
+      - name: Restart service
+        working-directory: ${{ env.DEPLOY_HOME }}
+        run: docker compose up -d --remove-orphans shopco-backend
+
+      # Fail the deploy if the app does not answer on / within ~60 seconds
+      # (for example, a missing .env key makes it crash at startup).
+      - name: Health check
+        working-directory: ${{ env.DEPLOY_HOME }}
+        run: |
+          for i in $(seq 1 20); do
+            if docker compose exec -T shopco-backend node -e "fetch('http://localhost:' + (process.env.PORT || 3000) + '/').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"; then
+              echo "Healthy after attempt $i"
+              exit 0
+            fi
+            sleep 3
+          done
+          echo "Health check failed. Recent logs:"
+          docker compose logs --tail=100 shopco-backend
+          exit 1
+
+      - name: Remove unused images
+        run: docker image prune -f
+
+      - name: Log out of GHCR
+        if: always()
+        run: docker logout ghcr.io

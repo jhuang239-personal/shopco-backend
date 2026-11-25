@@ -1,97 +1,97 @@
 import { Request, Response } from "express";
-import Review, { ReviewAttributes } from "../models/review";
+import prisma from "../utils/prisma";
+
+const errorMessage = (error: unknown) =>
+  error instanceof Error ? error.message : "Internal server error";
 
 const createReview = async (req: Request, res: Response) => {
   try {
-    const { comment, rating, product_id } =
-      req.body as ReviewAttributes;
-    const user_id = req.body.user.username;
-    console.log(user_id);
+    const { comment, rating, product_id } = req.body;
+    const user_id: string = req.body.user.username;
 
-    const review = await Review.create({
-      comment,
-      rating,
-      user_id,
-      product_id,
+    const user = await prisma.user.findUnique({ where: { username: user_id } });
+    if (!user) {
+      res.status(400).json({ error: "User does not exist" });
+      return;
+    }
+
+    const review = await prisma.review.create({
+      data: {
+        comment,
+        rating: parseInt(rating, 10),
+        user_id,
+        product_id,
+      },
     });
     res.status(201).json(review);
   } catch (error) {
-    if (error instanceof Error) {
-      res.status(400).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Internal server error" });
-    }
+    res.status(400).json({ error: errorMessage(error) });
   }
 };
 
 const updateReview = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { comment, rating } = req.body as ReviewAttributes;
-    const review = await Review.findByPk(id);
+    const { comment, rating } = req.body;
+    const review = await prisma.review.findUnique({ where: { id } });
     if (!review) {
       res.status(404).json({ error: "Review not found" });
       return;
     }
-    await review.update({ comment, rating });
-    res.status(200).json(review);
+    const updated = await prisma.review.update({
+      where: { id },
+      data: {
+        comment,
+        rating: rating === undefined ? undefined : parseInt(rating, 10),
+      },
+    });
+    res.status(200).json(updated);
   } catch (error) {
-    if (error instanceof Error) {
-      res.status(400).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Internal server error" });
-    }
+    res.status(400).json({ error: errorMessage(error) });
   }
 };
 
 const deleteReview = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const review = await Review.findByPk(id);
+    const review = await prisma.review.findUnique({ where: { id } });
     if (!review) {
       res.status(404).json({ error: "Review not found" });
       return;
     }
-    await review.destroy();
+    await prisma.review.delete({ where: { id } });
     res.status(204).end();
   } catch (error) {
-    if (error instanceof Error) {
-      res.status(400).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Internal server error" });
-    }
+    res.status(400).json({ error: errorMessage(error) });
   }
 };
 
 const getReviewByProductId = async (req: Request, res: Response) => {
   try {
     const product_id = req.params.id;
-    const reviews = await Review.findAll({ where: { product_id } });
+    const reviews = await prisma.review.findMany({ where: { product_id } });
     res.status(200).json(reviews);
   } catch (error) {
-    if (error instanceof Error) {
-      res.status(400).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Internal server error" });
-    }
+    res.status(400).json({ error: errorMessage(error) });
   }
 };
 
 const getTop9Reviews = async (req: Request, res: Response) => {
-  console.log("getTop10Reviews");
   try {
-    const reviews = await Review.findAll({
-      limit: 9,
-      order: [["rating", "DESC"]],
+    const reviews = await prisma.review.findMany({
+      take: 9,
+      orderBy: { rating: "desc" },
     });
     res.status(200).json(reviews);
   } catch (error) {
-    if (error instanceof Error) {
-      res.status(400).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Internal server error" });
-    }
+    res.status(400).json({ error: errorMessage(error) });
   }
-}
+};
 
-export { createReview, updateReview, deleteReview, getReviewByProductId, getTop9Reviews };
+export {
+  createReview,
+  updateReview,
+  deleteReview,
+  getReviewByProductId,
+  getTop9Reviews,
+};

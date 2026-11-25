@@ -1,7 +1,7 @@
 require("dotenv").config();
 import { NextFunction, Request, Response } from "express";
 import express, { Express } from "express";
-import sequelize from "./utils/database";
+import prisma from "./utils/prisma";
 import cors from "cors";
 //* routes
 import userRoute from "./routes/userRoute";
@@ -21,7 +21,6 @@ import config from "./swagger.config";
 
 //* middleware
 import { isAuthenticated, isAdmin } from "./middlewares/authentication";
-import relationshipInit from "./utils/relationship-init";
 
 const app: Express = express();
 const PORT = process.env.PORT || 3000;
@@ -55,11 +54,20 @@ app.get("/", (req, res) => {
     res.send("Hello World 123!");
 });
 
-sequelize.sync().then(() => {
-    console.log("Database connected");
-    relationshipInit(sequelize);
-});
+// Schema is managed by Prisma Migrate (`prisma migrate deploy`), not sync().
+prisma
+    .$connect()
+    .then(() => console.log("Database connected"))
+    .catch((error) => console.error("Database connection failed", error));
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
+
+const shutdown = async () => {
+    server.close();
+    await prisma.$disconnect();
+    process.exit(0);
+};
+process.on("SIGTERM", shutdown);
+process.on("SIGINT", shutdown);

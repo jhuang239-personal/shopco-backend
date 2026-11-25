@@ -1,9 +1,9 @@
 import express, { Request, Response } from "express";
 import { updateUser, uploadUserImage } from "../controllers/userController";
 import {
-  uploadUserImageToFirebase,
-  deleteUserImageFromFirebase,
-} from "../middlewares/firebase";
+  uploadUserImageToStorage,
+  deleteUserImageFromStorage,
+} from "../middlewares/storage";
 import { upload } from "../middlewares/multer";
 
 const router = express.Router();
@@ -55,7 +55,7 @@ export const updateUserSchema = {
   "/user/deleteUserImage/{id}": {
     delete: {
       tags: ["User"],
-      summary: "Delete user image from Firebase",
+      summary: "Delete user image from object storage",
       security: [
         {
           bearerAuth: [],
@@ -135,10 +135,10 @@ router.post("/updateUser/:id", updateUser);
 router.post(
   "/uploadImage/:id",
   upload.single("file_name"),
-  uploadUserImageToFirebase,
+  uploadUserImageToStorage,
   uploadUserImage
 );
 
-router.delete("/deleteUserImage/:id", deleteUserImageFromFirebase);
+router.delete("/deleteUserImage/:id", deleteUserImageFromStorage);
 
 export default router;

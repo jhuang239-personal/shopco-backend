@@ -10,10 +10,10 @@ import { addBrand, deleteBrand } from "../controllers/brandController";
 import { addCategory, deleteCategory } from "../controllers/categoryController";
 import { createSale } from "../controllers/saleController";
 import {
-  uploadFilesToFirebase,
-  deleteFileFromFirebase,
-  deleteFileFromFirebaseByImgIds,
-} from "../middlewares/firebase";
+  uploadFilesToStorage,
+  deleteFileFromStorage,
+  deleteFileFromStorageByImgIds,
+} from "../middlewares/storage";
 import { createProductImg } from "../controllers/product-imgController";
 import { upload } from "../middlewares/multer";
 import { createCode, deleteCode } from "../controllers/codeController";
@@ -475,7 +475,7 @@ router.post(
   "/addProduct",
   upload.array("images", 5),
   addProduct,
-  uploadFilesToFirebase,
+  uploadFilesToStorage,
   createProductImg
 );
 
@@ -483,14 +483,14 @@ router.put(
   "/updateProduct/:id",
   upload.array("images", 5),
   updateProduct,
-  deleteFileFromFirebaseByImgIds,
-  uploadFilesToFirebase,
+  deleteFileFromStorageByImgIds,
+  uploadFilesToStorage,
   createProductImg
 );
 
 router.get("/allUsers", getUsers);
 
-router.delete("/deleteProduct/:id", deleteFileFromFirebase, deleteProduct);
+router.delete("/deleteProduct/:id", deleteFileFromStorage, deleteProduct);
 
 router.post("/addBrand", addBrand);
 

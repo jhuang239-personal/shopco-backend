@@ -1,0 +1,165 @@
+// Prisma schema for shopco-backend.
+// Table and column names mirror the previous Sequelize models so existing data
+// can be carried over. The connection URL lives in prisma.config.ts.
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(uuid()) @db.Uuid
+  email     String   @unique @db.VarChar(255)
+  username  String   @unique @db.VarChar(255)
+  password  String   @db.VarChar(255)
+  type      String   @default("user") @db.VarChar(255)
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @db.Timestamptz(6)
+
+  @@map("users")
+}
+
+model Brand {
+  id        String    @id @default(uuid()) @db.Uuid
+  name      String    @db.VarChar(255)
+  createdAt DateTime  @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime  @updatedAt @db.Timestamptz(6)
+  Products  Product[]
+
+  @@map("brands")
+}
+
+model Category {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @db.VarChar(255)
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @db.Timestamptz(6)
+
+  @@map("categories")
+}
+
+model DressStyle {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @db.VarChar(255)
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @db.Timestamptz(6)
+
+  @@map("dress_styles")
+}
+
+model Product {
+  id           String       @id @default(uuid()) @db.Uuid
+  name         String       @db.VarChar(255)
+  description  String       @db.Text
+  price        Float
+  stock        Int
+  // Arrays of category / style ids. Existence is checked in the service layer,
+  // because Postgres cannot enforce foreign keys on array elements.
+  category_ids String[]     @db.Uuid
+  style_ids    String[]     @db.Uuid
+  brand_id     String       @db.Uuid
+  createdAt    DateTime     @default(now()) @db.Timestamptz(6)
+  updatedAt    DateTime     @updatedAt @db.Timestamptz(6)
+
+  Brand       Brand        @relation(fields: [brand_id], references: [id])
+  ProductImgs ProductImg[]
+  Sales       Sale[]
+  Reviews     Review[]
+  Carts       Cart[]
+
+  @@index([brand_id])
+  @@map("products")
+}
+
+model ProductImg {
+  id         String   @id @default(uuid()) @db.Uuid
+  product_id String   @db.Uuid
+  file_name  String   @db.VarChar(255)
+  createdAt  DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt  DateTime @updatedAt @db.Timestamptz(6)
+
+  Product Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
+
+  @@index([product_id])
+  @@map("product_imgs")
+}
+
+model UserImg {
+  id        String   @id @default(uuid()) @db.Uuid
+  // Holds the username, same as the previous model.
+  user_id   String   @db.VarChar(255)
+  file_name String   @db.VarChar(255)
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @db.Timestamptz(6)
+
+  @@index([user_id])
+  @@map("user_imgs")
+}
+
+model Cart {
+  id         String   @id @default(uuid()) @db.Uuid
+  // Holds the username, same as the previous model.
+  user_id    String   @db.VarChar(255)
+  product_id String   @db.Uuid
+  quantity   Int
+  color      String   @db.VarChar(255)
+  size       String   @db.VarChar(255)
+  createdAt  DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt  DateTime @updatedAt @db.Timestamptz(6)
+
+  Product Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@index([product_id])
+  @@map("carts")
+}
+
+model Review {
+  id         String   @id @default(uuid()) @db.Uuid
+  comment    String   @db.VarChar(255)
+  rating     Int
+  // Holds the username, same as the previous model.
+  user_id    String   @db.VarChar(255)
+  product_id String   @db.Uuid
+  createdAt  DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt  DateTime @updatedAt @db.Timestamptz(6)
+
+  Product Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
+
+  @@index([product_id])
+  @@index([user_id])
+  @@map("reviews")
+}
+
+model Sale {
+  id         String   @id @default(uuid()) @db.Uuid
+  start_date DateTime @db.Timestamptz(6)
+  end_date   DateTime @db.Timestamptz(6)
+  discount   Float
+  product_id String   @db.Uuid
+  createdAt  DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt  DateTime @updatedAt @db.Timestamptz(6)
+
+  Product Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
+
+  @@index([product_id])
+  @@map("sales")
+}
+
+model Code {
+  id         String   @id @default(uuid()) @db.Uuid
+  code       String   @db.VarChar(255)
+  type       String   @db.VarChar(255)
+  discount   Float
+  start_date DateTime @db.Timestamptz(6)
+  end_date   DateTime @db.Timestamptz(6)
+  createdAt  DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt  DateTime @updatedAt @db.Timestamptz(6)
+
+  @@map("codes")
+}

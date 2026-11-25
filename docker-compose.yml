@@ -1,15 +1,15 @@
 services:
   shopco-backend:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: shopco-backend:latest
+    # Deployments set SHOPCO_IMAGE / SHOPCO_TAG (see .github/workflows/backend-deploy.yml).
+    # This file is production-only: it never builds. For local builds,
+    # docker-compose.override.yml (loaded automatically) adds the build section.
+    image: ${SHOPCO_IMAGE:-ghcr.io/jhuang239/shopco-backend}:${SHOPCO_TAG:-latest}
     container_name: shopco-backend
     restart: unless-stopped
     networks:
-      - traefik-net
+      - proxy
     env_file:
-      - .env # Load environment variables from .env file
+      - .env # Runtime secrets (prismadb_connector, OCI keys, JWT, ...) stay on the host
     labels:
       - traefik.enable=true
       - traefik.http.routers.shopco-backend.rule=Host(`shopco-backend.${DOMAIN}`)
@@ -19,5 +19,5 @@ services:
       - traefik.http.routers.shopco-backend.tls.certresolver=cloudflare
 
 networks:
-  traefik-net:
+  proxy:
     external: true

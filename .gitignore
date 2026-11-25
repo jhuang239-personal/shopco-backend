@@ -1,5 +1,7 @@
 node_modules/
-firebase.json
 .env
 dist/
+src/generated/
 .vscode/
+assets/
+docs/

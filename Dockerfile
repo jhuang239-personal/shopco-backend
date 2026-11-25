@@ -1,37 +1,39 @@
-FROM node:18-alpine as builder
+# Prisma 7 requires Node.js 22.18+.
+# Debian-slim (glibc) rather than Alpine (musl): Prisma's engine binaries are best supported there.
+FROM node:22-slim AS builder
 
 WORKDIR /app
 
-# Install pnpm globally
-RUN npm install -g pnpm
+RUN npm install -g pnpm@11.22.0
 
-# Copy package files and install dependencies
-COPY package.json pnpm-lock.yaml* tsconfig.json ./
+# pnpm-workspace.yaml holds the allowBuilds list (Prisma engines), so it must be present
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.json prisma.config.ts ./
+COPY prisma ./prisma
 RUN pnpm install --frozen-lockfile
 
-# Copy source code
 COPY src/ ./src/
 
-# Build TypeScript code
-RUN pnpm run build
+# `prisma generate` only needs a syntactically valid URL; the real connector is
+# injected at runtime through env_file, so no secret ends up in an image layer.
+RUN prismadb_connector="postgresql://build:build@localhost:5432/build" pnpm run build
 
 # Production stage
-FROM node:18-alpine
+FROM node:22-slim
 
 WORKDIR /app
 
-# Install pnpm globally in production image
-RUN npm install -g pnpm
+ENV NODE_ENV=production
 
-# Copy package files and install only production dependencies
-COPY package.json pnpm-lock.yaml* ./
+RUN npm install -g pnpm@11.22.0
+
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY prisma ./prisma
+COPY prisma.config.ts ./
+# Installs the Prisma CLI too (a runtime dependency) so `migrate deploy` can run in this image
 RUN pnpm install --frozen-lockfile --prod
 
-# Copy compiled code from builder stage
 COPY --from=builder /app/dist ./dist
 
-# Expose the port your app runs on
 EXPOSE 3000
 
-# Command to run the application
 CMD ["node", "dist/app.js"]

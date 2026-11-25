@@ -1,0 +1,394 @@
+SHOPCO PRODUCT DESCRIPTIONS
+===========================
+40 products in 10 categories. Each product needs 3 images.
+Image keys: seed/<category-slug>/<product-slug>-1.jpg, -2.jpg, -3.jpg
+
+CATEGORY: T-Shirts
+------------------------------------------------------------
+
+1. Classic Crew Tee
+   Category:    T-Shirts
+   Brand:       Northline
+   Styles:      Casual, Street
+   Price:       $24.90
+   Stock:       120
+   Image keys:  seed/t-shirts/classic-crew-tee-1.jpg, -2.jpg, -3.jpg
+   Description: A soft, midweight crew-neck tee cut for an easy everyday fit. Pre-shrunk cotton jersey with a ribbed collar that holds its shape wash after wash.
+
+2. Oversized Graphic Tee
+   Category:    T-Shirts
+   Brand:       Northline
+   Styles:      Street
+   Price:       $32.50
+   Stock:       80
+   Image keys:  seed/t-shirts/oversized-graphic-tee-1.jpg, -2.jpg, -3.jpg
+   Description: Dropped shoulders and a boxy body make this relaxed tee a streetwear staple. Screen-printed back graphic on heavyweight cotton.
+
+3. Striped Linen Tee
+   Category:    T-Shirts
+   Brand:       Verdant & Co.
+   Styles:      Casual
+   Price:       $29.00
+   Stock:       60
+   Image keys:  seed/t-shirts/striped-linen-tee-1.jpg, -2.jpg, -3.jpg
+   Description: Breathable linen-cotton blend in a classic navy stripe. A lightweight tee for warm days that softens with every wear.
+
+4. Performance V-Neck Tee
+   Category:    T-Shirts
+   Brand:       Kestrel Outdoor
+   Styles:      Gym
+   Price:       $27.00
+   Stock:       95
+   Image keys:  seed/t-shirts/performance-v-neck-tee-1.jpg, -2.jpg, -3.jpg
+   Description: Moisture-wicking polyester knit with flatlock seams to reduce chafing. A slim V-neck built for training and long walks.
+
+CATEGORY: Shirts
+------------------------------------------------------------
+
+5. Oxford Button-Down Shirt
+   Category:    Shirts
+   Brand:       Oakmere
+   Styles:      Formal, Casual
+   Price:       $58.00
+   Stock:       45
+   Image keys:  seed/shirts/oxford-button-down-shirt-1.jpg, -2.jpg, -3.jpg
+   Description: Classic oxford cloth with a soft roll collar and button-down collar points. Tailored through the body for a clean, polished look.
+
+6. Slim Fit Dress Shirt
+   Category:    Shirts
+   Brand:       Atelier Nord
+   Styles:      Formal
+   Price:       $74.00
+   Stock:       40
+   Image keys:  seed/shirts/slim-fit-dress-shirt-1.jpg, -2.jpg, -3.jpg
+   Description: Wrinkle-resistant cotton poplin in a slim cut. Finished with mother-of-pearl buttons and a hidden placket for a sharp silhouette.
+
+7. Western Denim Shirt
+   Category:    Shirts
+   Brand:       Northline
+   Styles:      Casual
+   Price:       $49.50
+   Stock:       55
+   Image keys:  seed/shirts/western-denim-shirt-1.jpg, -2.jpg, -3.jpg
+   Description: Mid-wash denim with pearl snap buttons and yoke detailing. Layers easily over tees or under a jacket.
+
+8. Flannel Check Shirt
+   Category:    Shirts
+   Brand:       Verdant & Co.
+   Styles:      Casual, Street
+   Price:       $46.00
+   Stock:       70
+   Image keys:  seed/shirts/flannel-check-shirt-1.jpg, -2.jpg, -3.jpg
+   Description: Brushed cotton flannel in a warm red-and-charcoal check. Relaxed fit with chest pockets and a comfortable, weekend-ready feel.
+
+CATEGORY: Jeans
+------------------------------------------------------------
+
+9. Straight Leg Indigo Jeans
+   Category:    Jeans
+   Brand:       Northline
+   Styles:      Casual
+   Price:       $68.00
+   Stock:       90
+   Image keys:  seed/jeans/straight-leg-indigo-jeans-1.jpg, -2.jpg, -3.jpg
+   Description: Rigid indigo denim that softens over time. A straight leg with a mid rise and classic five-pocket styling.
+
+10. Slim Taper Stretch Jeans
+   Category:    Jeans
+   Brand:       Oakmere
+   Styles:      Casual, Street
+   Price:       $72.00
+   Stock:       85
+   Image keys:  seed/jeans/slim-taper-stretch-jeans-1.jpg, -2.jpg, -3.jpg
+   Description: Stretch denim with a slim taper and a comfortable mid rise. Keeps its shape through a full day of wear.
+
+11. Relaxed Baggy Jeans
+   Category:    Jeans
+   Brand:       Northline
+   Styles:      Street
+   Price:       $64.00
+   Stock:       60
+   Image keys:  seed/jeans/relaxed-baggy-jeans-1.jpg, -2.jpg, -3.jpg
+   Description: Wide-leg denim with a relaxed seat and a generous leg opening. Inspired by 90s skate silhouettes.
+
+12. Black Skinny Jeans
+   Category:    Jeans
+   Brand:       Atelier Nord
+   Styles:      Party
+   Price:       $66.00
+   Stock:       50
+   Image keys:  seed/jeans/black-skinny-jeans-1.jpg, -2.jpg, -3.jpg
+   Description: Washed black stretch denim with a skinny fit from hip to ankle. Pairs well with boots for evening wear.
+
+CATEGORY: Hoodies
+------------------------------------------------------------
+
+13. Pullover Fleece Hoodie
+   Category:    Hoodies
+   Brand:       Kestrel Outdoor
+   Styles:      Casual, Gym
+   Price:       $54.00
+   Stock:       100
+   Image keys:  seed/hoodies/pullover-fleece-hoodie-1.jpg, -2.jpg, -3.jpg
+   Description: Brushed fleece interior for warmth without the bulk. A kangaroo pocket and drawstring hood for easy layering.
+
+14. Zip-Up Hoodie
+   Category:    Hoodies
+   Brand:       Northline
+   Styles:      Street
+   Price:       $58.00
+   Stock:       75
+   Image keys:  seed/hoodies/zip-up-hoodie-1.jpg, -2.jpg, -3.jpg
+   Description: Full-length zip with metal hardware and a double-layer hood. Built on a heavyweight cotton-blend French terry.
+
+15. Cropped Oversized Hoodie
+   Category:    Hoodies
+   Brand:       Verdant & Co.
+   Styles:      Street, Party
+   Price:       $52.00
+   Stock:       40
+   Image keys:  seed/hoodies/cropped-oversized-hoodie-1.jpg, -2.jpg, -3.jpg
+   Description: A cropped, oversized fit with dropped shoulders. Made from organic cotton with a soft brushed back.
+
+16. Tech Training Hoodie
+   Category:    Hoodies
+   Brand:       Kestrel Outdoor
+   Styles:      Gym
+   Price:       $62.00
+   Stock:       65
+   Image keys:  seed/hoodies/tech-training-hoodie-1.jpg, -2.jpg, -3.jpg
+   Description: Lightweight stretch knit with thumbholes and a reflective logo. Breathes well during high-intensity sessions.
+
+CATEGORY: Jackets
+------------------------------------------------------------
+
+17. Waxed Cotton Field Jacket
+   Category:    Jackets
+   Brand:       Kestrel Outdoor
+   Styles:      Casual
+   Price:       $139.00
+   Stock:       30
+   Image keys:  seed/jackets/waxed-cotton-field-jacket-1.jpg, -2.jpg, -3.jpg
+   Description: Water-resistant waxed cotton with a corduroy collar and multiple pockets. Develops a worn-in patina over time.
+
+18. Denim Trucker Jacket
+   Category:    Jackets
+   Brand:       Northline
+   Styles:      Casual, Street
+   Price:       $98.00
+   Stock:       45
+   Image keys:  seed/jackets/denim-trucker-jacket-1.jpg, -2.jpg, -3.jpg
+   Description: Classic trucker cut in washed denim with flap chest pockets. A versatile layer for transitional weather.
+
+19. Wool Blend Overcoat
+   Category:    Jackets
+   Brand:       Atelier Nord
+   Styles:      Formal
+   Price:       $245.00
+   Stock:       20
+   Image keys:  seed/jackets/wool-blend-overcoat-1.jpg, -2.jpg, -3.jpg
+   Description: A tailored single-breasted overcoat in a wool-cashmere blend. Finished with a notched lapel and a full satin lining.
+
+20. Lightweight Bomber Jacket
+   Category:    Jackets
+   Brand:       Oakmere
+   Styles:      Street
+   Price:       $112.00
+   Stock:       35
+   Image keys:  seed/jackets/lightweight-bomber-jacket-1.jpg, -2.jpg, -3.jpg
+   Description: Nylon shell with ribbed cuffs and hem. A short, structured bomber that layers easily over tees.
+
+CATEGORY: Dresses
+------------------------------------------------------------
+
+21. Wrap Midi Dress
+   Category:    Dresses
+   Brand:       Verdant & Co.
+   Styles:      Party, Casual
+   Price:       $96.00
+   Stock:       40
+   Image keys:  seed/dresses/wrap-midi-dress-1.jpg, -2.jpg, -3.jpg
+   Description: A flowing wrap silhouette in a viscose blend with a tie waist. Moves easily from a day at the office to dinner.
+
+22. Satin Slip Dress
+   Category:    Dresses
+   Brand:       Atelier Nord
+   Styles:      Party
+   Price:       $118.00
+   Stock:       25
+   Image keys:  seed/dresses/satin-slip-dress-1.jpg, -2.jpg, -3.jpg
+   Description: Bias-cut satin with thin adjustable straps and a subtle sheen. Designed for evening events.
+
+23. Linen Shirt Dress
+   Category:    Dresses
+   Brand:       Oakmere
+   Styles:      Casual
+   Price:       $84.00
+   Stock:       50
+   Image keys:  seed/dresses/linen-shirt-dress-1.jpg, -2.jpg, -3.jpg
+   Description: Breathable linen with a button-front shirt silhouette and a self-belt. A relaxed dress for warm-weather days.
+
+24. Ribbed Bodycon Dress
+   Category:    Dresses
+   Brand:       Northline
+   Styles:      Party, Street
+   Price:       $58.00
+   Stock:       60
+   Image keys:  seed/dresses/ribbed-bodycon-dress-1.jpg, -2.jpg, -3.jpg
+   Description: Stretch rib-knit that hugs the body with a square neckline. Easy to style with jackets or on its own.
+
+CATEGORY: Shorts
+------------------------------------------------------------
+
+25. Chino Shorts
+   Category:    Shorts
+   Brand:       Oakmere
+   Styles:      Casual
+   Price:       $42.00
+   Stock:       80
+   Image keys:  seed/shorts/chino-shorts-1.jpg, -2.jpg, -3.jpg
+   Description: Garment-dyed cotton twill with a mid-thigh inseam. A smart-casual short that works for weekends and travel.
+
+26. Denim Cut-Off Shorts
+   Category:    Shorts
+   Brand:       Northline
+   Styles:      Casual, Street
+   Price:       $39.00
+   Stock:       70
+   Image keys:  seed/shorts/denim-cut-off-shorts-1.jpg, -2.jpg, -3.jpg
+   Description: Mid-wash denim shorts with a frayed hem and five-pocket styling. A summer staple.
+
+27. Training Shorts with Liner
+   Category:    Shorts
+   Brand:       Kestrel Outdoor
+   Styles:      Gym
+   Price:       $34.00
+   Stock:       110
+   Image keys:  seed/shorts/training-shorts-with-liner-1.jpg, -2.jpg, -3.jpg
+   Description: Lightweight woven shell with an inner brief liner and zip pocket. Built for running and gym sessions.
+
+28. Linen Drawstring Shorts
+   Category:    Shorts
+   Brand:       Verdant & Co.
+   Styles:      Casual
+   Price:       $36.00
+   Stock:       55
+   Image keys:  seed/shorts/linen-drawstring-shorts-1.jpg, -2.jpg, -3.jpg
+   Description: Natural linen with an elasticated drawstring waist. Breathable and relaxed for resort-style days.
+
+CATEGORY: Sweaters
+------------------------------------------------------------
+
+29. Merino Crew Knit
+   Category:    Sweaters
+   Brand:       Atelier Nord
+   Styles:      Casual, Formal
+   Price:       $89.00
+   Stock:       45
+   Image keys:  seed/sweaters/merino-crew-knit-1.jpg, -2.jpg, -3.jpg
+   Description: Fine-gauge merino wool with a classic crew neck. Lightweight warmth that layers neatly under a coat.
+
+30. Cable Knit Sweater
+   Category:    Sweaters
+   Brand:       Oakmere
+   Styles:      Casual
+   Price:       $76.00
+   Stock:       50
+   Image keys:  seed/sweaters/cable-knit-sweater-1.jpg, -2.jpg, -3.jpg
+   Description: Chunky cable pattern in a soft acrylic-wool blend. A cozy sweater for cooler weather.
+
+31. Half-Zip Pullover
+   Category:    Sweaters
+   Brand:       Kestrel Outdoor
+   Styles:      Casual, Gym
+   Price:       $68.00
+   Stock:       60
+   Image keys:  seed/sweaters/half-zip-pullover-1.jpg, -2.jpg, -3.jpg
+   Description: Midweight knit with a half-zip collar and moisture-wicking finish. Works on trails and in town.
+
+32. Oversized Mock-Neck Knit
+   Category:    Sweaters
+   Brand:       Verdant & Co.
+   Styles:      Street
+   Price:       $72.00
+   Stock:       35
+   Image keys:  seed/sweaters/oversized-mock-neck-knit-1.jpg, -2.jpg, -3.jpg
+   Description: Relaxed mock-neck in recycled cotton-blend yarn. Dropped shoulders and a soft, slouchy drape.
+
+CATEGORY: Activewear
+------------------------------------------------------------
+
+33. High-Rise Leggings
+   Category:    Activewear
+   Brand:       Kestrel Outdoor
+   Styles:      Gym
+   Price:       $58.00
+   Stock:       100
+   Image keys:  seed/activewear/high-rise-leggings-1.jpg, -2.jpg, -3.jpg
+   Description: Four-way stretch fabric with a high waistband and a hidden pocket. Compressive enough for training.
+
+34. Seamless Sports Bra
+   Category:    Activewear
+   Brand:       Kestrel Outdoor
+   Styles:      Gym
+   Price:       $36.00
+   Stock:       90
+   Image keys:  seed/activewear/seamless-sports-bra-1.jpg, -2.jpg, -3.jpg
+   Description: A women's seamless sports bra with medium support. Wide elastic under-bust band, shoulder straps and removable cups. Breathable knit for high-impact workouts.
+
+35. Quarter-Zip Training Top
+   Category:    Activewear
+   Brand:       Northline
+   Styles:      Gym
+   Price:       $48.00
+   Stock:       70
+   Image keys:  seed/activewear/quarter-zip-training-top-1.jpg, -2.jpg, -3.jpg
+   Description: Lightweight quick-dry top with a quarter-zip and thumbholes. Designed to stay put during intense sessions.
+
+36. Jogger Track Pants
+   Category:    Activewear
+   Brand:       Northline
+   Styles:      Gym, Street
+   Price:       $52.00
+   Stock:       85
+   Image keys:  seed/activewear/jogger-track-pants-1.jpg, -2.jpg, -3.jpg
+   Description: Tapered joggers in brushed interlock with an elastic waist and ankle cuffs. Comfortable for training or lounging.
+
+CATEGORY: Skirts
+------------------------------------------------------------
+
+37. Pleated Midi Skirt
+   Category:    Skirts
+   Brand:       Atelier Nord
+   Styles:      Formal, Party
+   Price:       $79.00
+   Stock:       35
+   Image keys:  seed/skirts/pleated-midi-skirt-1.jpg, -2.jpg, -3.jpg
+   Description: Knife-pleated midi in a lightweight crepe with a high elastic waist. Elegant for office or occasion wear.
+
+38. Denim Mini Skirt
+   Category:    Skirts
+   Brand:       Northline
+   Styles:      Street
+   Price:       $46.00
+   Stock:       50
+   Image keys:  seed/skirts/denim-mini-skirt-1.jpg, -2.jpg, -3.jpg
+   Description: Button-front mini in washed denim with a raw hem. A casual skirt that pairs with tees and sneakers.
+
+39. A-Line Satin Skirt
+   Category:    Skirts
+   Brand:       Oakmere
+   Styles:      Party
+   Price:       $62.00
+   Stock:       30
+   Image keys:  seed/skirts/a-line-satin-skirt-1.jpg, -2.jpg, -3.jpg
+   Description: Satin A-line midi with a soft sheen and a concealed side zip. Dressed up with heels or down with a knit.
+
+40. Linen Wrap Skirt
+   Category:    Skirts
+   Brand:       Verdant & Co.
+   Styles:      Casual
+   Price:       $54.00
+   Stock:       40
+   Image keys:  seed/skirts/linen-wrap-skirt-1.jpg, -2.jpg, -3.jpg
+   Description: Linen blend wrap skirt with a self-tie waist. A breezy option for warm days.

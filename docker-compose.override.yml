@@ -1,0 +1,8 @@
+# Local development only. Docker Compose merges this file automatically when it sits
+# next to docker-compose.yml, so `docker compose up --build` builds from source.
+# The deploy job copies only docker-compose.yml to the VM, so production never builds.
+services:
+  shopco-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
