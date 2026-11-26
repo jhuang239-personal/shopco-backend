@@ -30,7 +30,7 @@ const swaggerSpec = swaggerJSDoc(config);
 // Add these middleware before your routes
 app.use(
     cors({
-        origin: "*",
+        origin: "https://static.codemonkeykim.dev",
         methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
         allowedHeaders: ["Content-Type", "Authorization"],
     })
