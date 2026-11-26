@@ -71,7 +71,7 @@ jobs:
     name: Deploy to server
     needs: build
     # Runs only on the self-hosted runner registered on the server (see README.Docker.md).
-    runs-on: [self-hosted, linux, shopco-backend]
+    runs-on: [self-hosted, linux, ARM64, Oracle-ARM]
     # Add required reviewers to this environment in GitHub Settings if you want approvals.
     environment: production
     permissions:
