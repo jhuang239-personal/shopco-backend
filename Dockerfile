@@ -24,13 +24,16 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 
-RUN npm install -g pnpm@11.22.0
+RUN npm install -g pnpm@11.22.0 && npm cache clean --force
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY prisma ./prisma
 COPY prisma.config.ts ./
-# Installs the Prisma CLI too (a runtime dependency) so `migrate deploy` can run in this image
-RUN pnpm install --frozen-lockfile --prod
+# Installs the Prisma CLI too (a runtime dependency) so `migrate deploy` can run in this image.
+# The pnpm store is written to a temp folder and deleted in the same step, so it does not
+# stay in the image layer (it was about 370 MB and duplicated the installed packages).
+RUN pnpm install --frozen-lockfile --prod --store-dir /tmp/pnpm-store \
+ && rm -rf /tmp/pnpm-store /root/.cache /root/.npm
 
 COPY --from=builder /app/dist ./dist
 
